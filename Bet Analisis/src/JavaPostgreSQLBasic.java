@@ -1,7 +1,5 @@
 import java.sql.*;
-import java.time.Clock;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Scanner;
 
 /**
@@ -63,7 +61,18 @@ public class JavaPostgreSQLBasic {
             System.out.println("Error al conectar con la base de datos de PostgreSQL (" + url + "): " + sqle);
         }
     }
+    public ArrayList<Bet> selectMatch(ArrayList<Bet> matches){
+        for (Bet aux : matches) {
+            if((aux.getProbSingle()<0.55)&&(aux.getProbCombi()<0.79)){
+                matches.remove(aux);
+            }
+        }
+        for (Bet aux1:matches) {
+            System.out.println(aux1.toString());
+        }
+        return matches;
 
+    }
     public void insertarPartidos(){
 
         String home="";
@@ -662,7 +671,7 @@ public class JavaPostgreSQLBasic {
         Scanner sc =new Scanner(System.in);
         JavaPostgreSQLBasic javaPostgreSQLBasic = new JavaPostgreSQLBasic();
         while(salir!=0){
-        System.out.println("Seleccionar Opcion: \n 1.Introducir Partidos \n 2.Analisis");
+        System.out.println("Seleccionar Opcion: \n 1.Introducir Partidos \n 2.Analisis \n 3.Elegir Bets");
         int opcion=sc.nextInt();
         if(opcion==1){
 
@@ -677,6 +686,8 @@ public class JavaPostgreSQLBasic {
                 System.out.println(aux1.toString());
             }
 
+        }else if(opcion==3){
+            javaPostgreSQLBasic.selectMatch(betList);
         }
         }
     }
