@@ -62,15 +62,41 @@ public class JavaPostgreSQLBasic {
         }
     }
     public ArrayList<Bet> selectMatch(ArrayList<Bet> matches){
+        ArrayList<Bet> bets=new ArrayList<Bet>();
         for (Bet aux : matches) {
-            if((aux.getProbSingle()<0.55)&&(aux.getProbCombi()<0.79)){
-                matches.remove(aux);
+            if((aux.getProbSingle()>0.55)||(aux.getProbCombi()>0.79)){
+                bets.add(aux);
             }
         }
-        for (Bet aux1:matches) {
-            System.out.println(aux1.toString());
+        try {
+            try {
+                Class.forName("org.postgresql.Driver");
+            } catch (ClassNotFoundException ex) {
+                System.out.println("Error al registrar el driver de PostgreSQL: " + ex);
+            }
+            Connection connection = null;
+            // Database connect
+            // Conectamos con la base de datos
+            connection = DriverManager.getConnection(
+                    "jdbc:postgresql://192.168.1.63:5432/bet_analisis",
+                    "postgres", "hacker21");
+            String bet="";
+            for (Bet aux1:bets) {
+                if ((aux1.getProbSingle()>0.55) && (aux1.getOddSingle()>1.15)){
+                    bet=aux1.getSingle();
+                } else {
+                    bet=aux1.getCombi();
+                }
+                PreparedStatement stmnt = connection.prepareStatement("INSERT INTO public.bets(match, bet) VALUES ('"+ aux1.getEquipos()+"', '" +bet+"');");
+                stmnt.executeUpdate();
+                System.out.println(aux1.toString());
+            }
+            connection.close();
+        } catch (Exception e) {
+            //TODO: handle exception
         }
-        return matches;
+        
+        return bets;
 
     }
     public void insertarPartidos(){
@@ -664,6 +690,10 @@ public class JavaPostgreSQLBasic {
         }
         return null;
     }
+    public ArrayList<Bet> deleteList(){
+        ArrayList<Bet> aux=new ArrayList<Bet>();
+        return aux; 
+    }
     public static void main(String[] args) {
         ArrayList<Bet> betList=new ArrayList<Bet>();
         int salir=1;
@@ -671,7 +701,7 @@ public class JavaPostgreSQLBasic {
         Scanner sc =new Scanner(System.in);
         JavaPostgreSQLBasic javaPostgreSQLBasic = new JavaPostgreSQLBasic();
         while(salir!=0){
-        System.out.println("Seleccionar Opcion: \n 1.Introducir Partidos \n 2.Analisis \n 3.Elegir Bets");
+        System.out.println("Seleccionar Opcion: \n 1.Introducir Partidos \n 2.Analisis \n 3.Elegir Bets \n 4.Borrar partidos");
         int opcion=sc.nextInt();
         if(opcion==1){
 
@@ -682,12 +712,17 @@ public class JavaPostgreSQLBasic {
 
             Bet aux=javaPostgreSQLBasic.consultaBet();
             betList.add(aux);
-            for (Bet aux1:betList) {
-                System.out.println(aux1.toString());
+            for (Bet bet : betList) {
+                bet.toString();
             }
-
         }else if(opcion==3){
-            javaPostgreSQLBasic.selectMatch(betList);
+            betList=javaPostgreSQLBasic.selectMatch(betList);
+            for (Bet bet : betList) {
+                bet.toString();
+            }
+           
+        }else if(opcion==4){
+            betList=javaPostgreSQLBasic.deleteList();
         }
         }
     }
