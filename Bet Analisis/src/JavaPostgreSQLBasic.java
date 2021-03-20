@@ -703,6 +703,7 @@ public class JavaPostgreSQLBasic {
         while(salir!=0){
         System.out.println("Seleccionar Opcion: \n 1.Introducir Partidos \n 2.Analisis \n 3.Elegir Bets \n 4.Borrar partidos");
         int opcion=sc.nextInt();
+        salir=opcion;
         if(opcion==1){
 
             javaPostgreSQLBasic.insertarPartidos();
