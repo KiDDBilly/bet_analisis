@@ -15,6 +15,57 @@ public class JavaPostgreSQLBasic {
      * We establish the connection with the database <b>customerdb</b>.
      * Establecemos la conexión con la base de datos <b>customerdb</b>.
      */
+    public void consultarBetActivas(){
+        try {
+            Connection connection = null;
+            // Database connect
+            // Conectamos con la base de datos
+            connection = DriverManager.getConnection(
+                    "jdbc:postgresql://192.168.1.63:5432/bet_analisis",
+                    "postgres", "hacker21");
+            PreparedStatement stmnt = connection.prepareStatement("Select match,bet,odd from bets where guessed='????';");
+            ResultSet result= stmnt.executeQuery();
+            while (result.next()) {
+                System.out.println(result.getString("match")+" "+result.getString("bet")+" "+result.getDouble("odd"));
+            }
+            result.close();
+            connection.close();
+        } catch (Exception e) {
+            //TODO: handle exception
+        }
+    }
+    public void consultarPorcentajes(){
+        try {
+            double acertados=0;
+            double fallados=0;
+            double total=0;
+            double mediaA=0;
+            double mediaF=0;
+            Connection connection = null;
+            // Database connect
+            // Conectamos con la base de datos
+            connection = DriverManager.getConnection(
+                    "jdbc:postgresql://192.168.1.63:5432/bet_analisis",
+                    "postgres", "hacker21");
+            PreparedStatement stmnt = connection.prepareStatement("Select guessed from bets where guessed!='????';");
+            ResultSet result= stmnt.executeQuery();
+            while (result.next()) {
+               if (result.getString("guessed").equals("SI")) {
+                   acertados++;
+               } else {
+                   fallados++;
+               }
+               total++;
+            }
+            result.close();
+            connection.close();
+            mediaA=acertados/total;
+            mediaF=fallados/total;
+            System.out.println("Total apuestas finalizadas: "+total+"\n Acertadas: "+acertados+ "\n Falladas: "+fallados+ "\n Media Acertadas: "+mediaA+"\n Media falladas: "+mediaF);
+        } catch (Exception e) {
+            //TODO: handle exception
+        }
+    }
     public void connectDatabase() {
         try {
             // We register the PostgreSQL driver
@@ -701,7 +752,7 @@ public class JavaPostgreSQLBasic {
         Scanner sc =new Scanner(System.in);
         JavaPostgreSQLBasic javaPostgreSQLBasic = new JavaPostgreSQLBasic();
         while(salir!=0){
-        System.out.println("Seleccionar Opcion: \n 1.Introducir Partidos \n 2.Analisis \n 3.Elegir Bets \n 4.Borrar partidos");
+        System.out.println("Seleccionar Opcion: \n 1.Introducir Partidos \n 2.Analisis \n 3.Elegir Bets \n 4.Borrar partidos \n 5.CONSULTAS \n 6.PORCENTAJES");
         int opcion=sc.nextInt();
         salir=opcion;
         if(opcion==1){
@@ -724,6 +775,10 @@ public class JavaPostgreSQLBasic {
            
         }else if(opcion==4){
             betList=javaPostgreSQLBasic.deleteList();
+        }else if(opcion==5){
+            javaPostgreSQLBasic.consultarBetActivas();
+        }else if(opcion==6){
+            javaPostgreSQLBasic.consultarPorcentajes();
         }
         }
     }
