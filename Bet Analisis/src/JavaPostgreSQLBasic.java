@@ -59,8 +59,8 @@ public class JavaPostgreSQLBasic {
             }
             result.close();
             connection.close();
-            mediaA=acertados/total;
-            mediaF=fallados/total;
+            mediaA=(acertados/total)*100;
+            mediaF=(fallados/total)*100;
             System.out.println("Total apuestas finalizadas: "+total+"\n Acertadas: "+acertados+ "\n Falladas: "+fallados+ "\n Media Acertadas: "+mediaA+"\n Media falladas: "+mediaF);
         } catch (Exception e) {
             //TODO: handle exception
