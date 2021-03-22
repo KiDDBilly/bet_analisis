@@ -21,7 +21,7 @@ public class JavaPostgreSQLBasic {
             // Database connect
             // Conectamos con la base de datos
             connection = DriverManager.getConnection(
-                    "jdbc:postgresql://192.168.1.63:5432/bet_analisis",
+                    "jdbc:postgresql://loststyle.ddns.net:5432/bet_analisis",
                     "postgres", "hacker21");
             PreparedStatement stmnt = connection.prepareStatement("Select match,bet,odd from bets where guessed='????';");
             ResultSet result= stmnt.executeQuery();
@@ -45,7 +45,7 @@ public class JavaPostgreSQLBasic {
             // Database connect
             // Conectamos con la base de datos
             connection = DriverManager.getConnection(
-                    "jdbc:postgresql://192.168.1.63:5432/bet_analisis",
+                    "jdbc:postgresql://loststyle.ddns.net:5432/bet_analisis",
                     "postgres", "hacker21");
             PreparedStatement stmnt = connection.prepareStatement("Select guessed from bets where guessed!='????';");
             ResultSet result= stmnt.executeQuery();
@@ -129,7 +129,7 @@ public class JavaPostgreSQLBasic {
             // Database connect
             // Conectamos con la base de datos
             connection = DriverManager.getConnection(
-                    "jdbc:postgresql://192.168.1.63:5432/bet_analisis",
+                    "jdbc:postgresql://loststyle.ddns.net:5432/bet_analisis",
                     "postgres", "hacker21");
             String bet="";
             for (Bet aux1:bets) {
@@ -193,7 +193,7 @@ public class JavaPostgreSQLBasic {
             // Database connect
             // Conectamos con la base de datos
             connection = DriverManager.getConnection(
-                    "jdbc:postgresql://192.168.1.63:5432/bet_analisis",
+                    "jdbc:postgresql://loststyle.ddns.net:5432/bet_analisis",
                     "postgres", "hacker21");
 
             boolean valid = connection.isValid(50000);
@@ -280,7 +280,7 @@ public class JavaPostgreSQLBasic {
             // Database connect
             // Conectamos con la base de datos
             connection = DriverManager.getConnection(
-                    "jdbc:postgresql://192.168.1.63:5432/bet_analisis",
+                    "jdbc:postgresql://loststyle.ddns.net:5432/bet_analisis",
                     "postgres", "hacker21");
             Statement stmt = connection.createStatement();
             /*
@@ -752,14 +752,11 @@ public class JavaPostgreSQLBasic {
         Scanner sc =new Scanner(System.in);
         JavaPostgreSQLBasic javaPostgreSQLBasic = new JavaPostgreSQLBasic();
         while(salir!=0){
-        System.out.println("Seleccionar Opcion: \n 1.Introducir Partidos \n 2.Analisis \n 3.Elegir Bets \n 4.Borrar partidos \n 5.CONSULTAS \n 6.PORCENTAJES");
+        System.out.println("Seleccionar Opcion: \n 1.Introducir Partidos \n 2.Analisis \n 3.Elegir Bets \n 4.CONSULTAS \n 5.PORCENTAJES");
         int opcion=sc.nextInt();
         salir=opcion;
         if(opcion==1){
-
             javaPostgreSQLBasic.insertarPartidos();
-
-
         }else if (opcion==2){
 
             Bet aux=javaPostgreSQLBasic.consultaBet();
@@ -772,12 +769,10 @@ public class JavaPostgreSQLBasic {
             for (Bet bet : betList) {
                 bet.toString();
             }
-           
-        }else if(opcion==4){
             betList=javaPostgreSQLBasic.deleteList();
-        }else if(opcion==5){
+        }else if(opcion==4){
             javaPostgreSQLBasic.consultarBetActivas();
-        }else if(opcion==6){
+        }else if(opcion==5){
             javaPostgreSQLBasic.consultarPorcentajes();
         }
         }
