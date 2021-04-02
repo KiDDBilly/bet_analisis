@@ -141,7 +141,7 @@ public class JavaPostgreSQLBasic {
                     bet=aux1.getCombi();
                     odd=aux1.getOddCombi();
                 }
-                PreparedStatement stmnt = connection.prepareStatement("INSERT INTO public.bets(match, bet,odd) VALUES ('"+ aux1.getEquipos()+"', '" +bet+"',"+odd+");");
+                PreparedStatement stmnt = connection.prepareStatement("INSERT INTO public.bets(match, bet,odd,goals) VALUES ('"+ aux1.getEquipos()+"', '" +bet+"',"+odd+","+aux1.getGoles()+");");
                 stmnt.executeUpdate();
                 System.out.println(aux1.toString());
             }
@@ -667,7 +667,49 @@ public class JavaPostgreSQLBasic {
                 aux++;
             }
             probLocal2=probLocal2/aux;
+            
+            aux=0;
+            double probAfavor1=0.0;
+            for (double aux1:odds1AFavor) {
 
+                probAfavor1=probAfavor1+aux1;
+                aux++;
+            }
+            probAfavor1=probAfavor1/aux;
+           
+
+            aux=0;
+            double probEncontra1=0.0;
+            for (double aux1:odds1Contra) {
+
+                probEncontra1=probEncontra1+aux1;
+                aux++;
+            }
+            probEncontra1=probEncontra1/aux;
+           
+            aux=0;
+            double probAfavor2=0.0;
+            for (double aux1:odds2Favor) {
+
+                probAfavor2=probAfavor2+aux1;
+                aux++;
+            }
+            probAfavor2=probAfavor2/aux;
+            
+            aux=0;
+            double probEncontra2=0.0;
+            for (double aux1:odds2Contra) {
+
+                probEncontra2=probEncontra2+aux1;
+                aux++;
+            }
+            probEncontra2=probEncontra2/aux;
+            
+            double probGolesLocal=(probAfavor1+probEncontra2)/2;
+            double probGolesVisitante=(probEncontra1+probAfavor2)/2;
+           
+            double goles=probGolesLocal+probGolesVisitante;
+            System.out.println(goles);
             probLocalT=(probLocal1+probLocal2)/2;
             probEmpateT=(probEmpate1+probEmpate2)/2;
             probVisitanteT=(probVisitante2+probVisitante1)/2;
@@ -726,7 +768,7 @@ public class JavaPostgreSQLBasic {
             }
             System.out.println("Introduzca Cuota de "+betCombiS+":");
             betOddC=sc.nextDouble();
-            partido=new Bet(local+" "+away,betSimpleS,betCombiS,betSimpleD,betCombinada,betOddS,betOddC);
+            partido=new Bet(local+" "+away,betSimpleS,betCombiS,betSimpleD,betCombinada,betOddS,betOddC,goles);
             partido.toString();
             return partido;
             /*while(!Odds1Ganar.isEmpty()){

@@ -6,8 +6,9 @@ public class Bet {
     private double probCombi=0.0;
     private double oddSingle=0.0;
     private double oddCombi=0.0;
+    private double goles=0.0;
 
-    public Bet(String equipos, String single, String combi, double probSingle, double probCombi, double oddSingle, double oddCombi) {
+    public Bet(String equipos, String single, String combi, double probSingle, double probCombi, double oddSingle, double oddCombi,double goles) {
         this.equipos = equipos;
         this.single = single;
         this.combi = combi;
@@ -15,6 +16,7 @@ public class Bet {
         this.probCombi = probCombi;
         this.oddSingle = oddSingle;
         this.oddCombi = oddCombi;
+        this.goles=goles;
     }
 
     @Override
@@ -26,14 +28,16 @@ public class Bet {
                 ", probSingle=" + probSingle +
                 ", probCombi=" + probCombi +
                 ", oddSingle=" + oddSingle +
-                ", oddCombi=" + oddCombi +
+                ", oddCombi=" + oddCombi + ", goles= "+goles+
                 '}';
     }
 
     public String getEquipos() {
         return equipos;
     }
-
+    public double getGoles(){
+        return goles;
+    }
     public void setEquipos(String equipos) {
         this.equipos = equipos;
     }
