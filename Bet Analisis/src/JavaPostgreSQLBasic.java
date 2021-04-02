@@ -114,6 +114,7 @@ public class JavaPostgreSQLBasic {
     }
     public ArrayList<Bet> selectMatch(ArrayList<Bet> matches){
         ArrayList<Bet> bets=new ArrayList<Bet>();
+        double odd=0.0;
         for (Bet aux : matches) {
             if((aux.getProbSingle()>0.55)||(aux.getProbCombi()>0.79)){
                 bets.add(aux);
@@ -135,10 +136,12 @@ public class JavaPostgreSQLBasic {
             for (Bet aux1:bets) {
                 if ((aux1.getProbSingle()>0.55) && (aux1.getOddSingle()>1.15)){
                     bet=aux1.getSingle();
+                    odd=aux1.getOddSingle();
                 } else {
                     bet=aux1.getCombi();
+                    odd=aux1.getOddCombi();
                 }
-                PreparedStatement stmnt = connection.prepareStatement("INSERT INTO public.bets(match, bet) VALUES ('"+ aux1.getEquipos()+"', '" +bet+"');");
+                PreparedStatement stmnt = connection.prepareStatement("INSERT INTO public.bets(match, bet,odd) VALUES ('"+ aux1.getEquipos()+"', '" +bet+"',"+odd+");");
                 stmnt.executeUpdate();
                 System.out.println(aux1.toString());
             }
