@@ -141,7 +141,7 @@ public class JavaPostgreSQLBasic {
                     bet=aux1.getCombi();
                     odd=aux1.getOddCombi();
                 }
-                PreparedStatement stmnt = connection.prepareStatement("INSERT INTO public.bets(match, bet,odd,goals) VALUES ('"+ aux1.getEquipos()+"', '" +bet+"',"+odd+","+aux1.getGoles()+");");
+                PreparedStatement stmnt = connection.prepareStatement("INSERT INTO public.bets(match, bet,odd,goals, \"guessedGoals\") VALUES ('"+ aux1.getEquipos()+"', '" +bet+"',"+odd+","+aux1.getGoles()+",'????');");
                 stmnt.executeUpdate();
                 System.out.println(aux1.toString());
             }
