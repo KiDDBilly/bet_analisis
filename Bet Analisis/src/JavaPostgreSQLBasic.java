@@ -141,9 +141,11 @@ public class JavaPostgreSQLBasic {
                     bet=aux1.getCombi();
                     odd=aux1.getOddCombi();
                 }
-                PreparedStatement stmnt = connection.prepareStatement("INSERT INTO public.bets(match, bet,odd,goals, \"guessedGoals\") VALUES ('"+ aux1.getEquipos()+"', '" +bet+"',"+odd+","+aux1.getGoles()+",'????');");
+                if(!bet.equals("1-2")||(bet.equals("1-2")&&(odd>1.35||odd<1.25))){
+                    PreparedStatement stmnt = connection.prepareStatement("INSERT INTO public.bets(match, bet,odd,goals, \"guessedGoals\") VALUES ('"+ aux1.getEquipos()+"', '" +bet+"',"+odd+","+aux1.getGoles()+",'????');");
                 stmnt.executeUpdate();
-                System.out.println(aux1.toString());
+                System.out.println(aux1.toString());}
+                
             }
             connection.close();
         } catch (Exception e) {
@@ -175,6 +177,7 @@ public class JavaPostgreSQLBasic {
         goalAway=sc.nextInt();
         System.out.println("Jornada: ");
         jornada=sc.nextInt();
+
         if (goalHome==goalAway)
         {draw=1;}
         else if (goalHome>goalAway){
