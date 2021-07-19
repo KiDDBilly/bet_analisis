@@ -293,7 +293,7 @@ public class JavaPostgreSQLBasic {
                 ESTADISTICAS  PARTIDOS  EQUIPO EN CASA
             */
             ResultSet result = stmt.executeQuery("SELECT Sum(goal_home) as Goles_A_Favor,SUM(goal_away)as Goles_En_Contra,SUM(win_home) as Victorias, SUM(draw_match) as Empates, SUM(win_away) as Derrota,(SUM(win_home)+SUM(draw_match)+SUM(win_away))as total\n" +
-                    "FROM public.matches where home_team='"+local+"';"); // O SELECT * FROM usuarios;
+                    "FROM public.matches_2021 where home_team='"+local+"';"); // O SELECT * FROM usuarios;
             while(result.next()) {
                  probG=(double) result.getInt("Victorias")/result.getInt("total");
                  probD=(double)result.getInt("Empates")/result.getInt("total");
