@@ -2,24 +2,13 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-/**
- * Basic connection to PostgreSQL database. 
- * Conexión básica a la base de datos PostgreSQL.
- *
- * @author Xules You can follow me on my website http://www.codigoxules.org/en
- * Puedes seguirme en mi web http://www.codigoxules.org).
- */
 public class JavaPostgreSQLBasic {
 
-    /**
-     * We establish the connection with the database <b>customerdb</b>.
-     * Establecemos la conexión con la base de datos <b>customerdb</b>.
-     */
+   
     public void consultarBetActivas(){
         try {
             Connection connection = null;
-            // Database connect
-            // Conectamos con la base de datos
+
             connection = DriverManager.getConnection(
                     "jdbc:postgresql://loststyle.ddns.net:5432/bet_analisis",
                     "postgres", "hacker21");
@@ -31,7 +20,7 @@ public class JavaPostgreSQLBasic {
             result.close();
             connection.close();
         } catch (Exception e) {
-            //TODO: handle exception
+
         }
     }
     public void consultarPorcentajes(){
@@ -42,8 +31,7 @@ public class JavaPostgreSQLBasic {
             double mediaA=0;
             double mediaF=0;
             Connection connection = null;
-            // Database connect
-            // Conectamos con la base de datos
+
             connection = DriverManager.getConnection(
                     "jdbc:postgresql://loststyle.ddns.net:5432/bet_analisis",
                     "postgres", "hacker21");
@@ -63,21 +51,19 @@ public class JavaPostgreSQLBasic {
             mediaF=(fallados/total)*100;
             System.out.println("Total apuestas finalizadas: "+total+"\n Acertadas: "+acertados+ "\n Falladas: "+fallados+ "\n Media Acertadas: "+mediaA+"\n Media falladas: "+mediaF);
         } catch (Exception e) {
-            //TODO: handle exception
+
         }
     }
     public void connectDatabase() {
         try {
-            // We register the PostgreSQL driver
-            // Registramos el driver de PostgresSQL
+           
             try {
                 Class.forName("org.postgresql.Driver");
             } catch (ClassNotFoundException ex) {
                 System.out.println("Error al registrar el driver de PostgreSQL: " + ex);
             }
             Connection connection = null;
-            // Database connect
-            // Conectamos con la base de datos
+            //
             connection = DriverManager.getConnection(
                     "jdbc:postgresql://192.168.1.63:5432/bet_analisis",
                     "postgres", "hacker21");
@@ -92,8 +78,7 @@ public class JavaPostgreSQLBasic {
                                 String user, String password) {
         String url = "";
         try {
-            // We register the PostgreSQL driver
-            // Registramos el driver de PostgresSQL
+          
             try {
                 Class.forName("org.postgresql.Driver");
             } catch (ClassNotFoundException ex) {
@@ -101,8 +86,7 @@ public class JavaPostgreSQLBasic {
             }
             Connection connection = null;
             url = "jdbc:postgresql://" + host + ":" + port + "/" + database;
-            // Database connect
-            // Conectamos con la base de datos
+     
             connection = DriverManager.getConnection(
                     url,
                     user, password);
@@ -127,8 +111,7 @@ public class JavaPostgreSQLBasic {
                 System.out.println("Error al registrar el driver de PostgreSQL: " + ex);
             }
             Connection connection = null;
-            // Database connect
-            // Conectamos con la base de datos
+         
             connection = DriverManager.getConnection(
                     "jdbc:postgresql://loststyle.ddns.net:5432/bet_analisis",
                     "postgres", "hacker21");
@@ -149,7 +132,7 @@ public class JavaPostgreSQLBasic {
             }
             connection.close();
         } catch (Exception e) {
-            //TODO: handle exception
+    
         }
         
         return bets;
@@ -188,16 +171,14 @@ public class JavaPostgreSQLBasic {
 
         System.out.println(home+" "+away+" "+goalHome+" "+goalAway+" "+jornada);
         try {
-            // We register the PostgreSQL driver
-            // Registramos el driver de PostgresSQL
+         
             try {
                 Class.forName("org.postgresql.Driver");
             } catch (ClassNotFoundException ex) {
                 System.out.println("Error al registrar el driver de PostgreSQL: " + ex);
             }
             Connection connection = null;
-            // Database connect
-            // Conectamos con la base de datos
+
             connection = DriverManager.getConnection(
                     "jdbc:postgresql://loststyle.ddns.net:5432/bet_analisis",
                     "postgres", "hacker21");
@@ -275,16 +256,14 @@ public class JavaPostgreSQLBasic {
 
 
         try {
-            // We register the PostgreSQL driver
-            // Registramos el driver de PostgresSQL
+      
             try {
                 Class.forName("org.postgresql.Driver");
             } catch (ClassNotFoundException ex) {
                 System.out.println("Error al registrar el driver de PostgreSQL: " + ex);
             }
             Connection connection = null;
-            // Database connect
-            // Conectamos con la base de datos
+   
             connection = DriverManager.getConnection(
                     "jdbc:postgresql://loststyle.ddns.net:5432/bet_analisis",
                     "postgres", "hacker21");
@@ -293,7 +272,7 @@ public class JavaPostgreSQLBasic {
                 ESTADISTICAS  PARTIDOS  EQUIPO EN CASA
             */
             ResultSet result = stmt.executeQuery("SELECT Sum(goal_home) as Goles_A_Favor,SUM(goal_away)as Goles_En_Contra,SUM(win_home) as Victorias, SUM(draw_match) as Empates, SUM(win_away) as Derrota,(SUM(win_home)+SUM(draw_match)+SUM(win_away))as total\n" +
-                    "FROM public.matches_2021 where home_team='"+local+"';"); // O SELECT * FROM usuarios;
+                    "FROM public.matches_2021 where home_team='"+local+"';"); 
             while(result.next()) {
                  probG=(double) result.getInt("Victorias")/result.getInt("total");
                  probD=(double)result.getInt("Empates")/result.getInt("total");
