@@ -1,0 +1,2 @@
+SELECT "scoreHomeHalf", "scoreHomeFull", "scoreAwayHalf", "scoreAwayFull"
+	FROM public.matches_2021 where hometeam=
