@@ -5,6 +5,13 @@ public class Consulatas {
     public static void consultarLista(){
         String home="";
         String away="";
+        double probGF=0;
+        double probDF=0;
+        double probLF=0;
+        double probGH=0;
+        double probDH=0;
+        double probLH=0;
+        int total=0;
         ArrayList<Double> probHGF=new ArrayList<Double>();
         ArrayList<Double> probHDF=new ArrayList<Double>();
         ArrayList<Double> probHPF=new ArrayList<Double>();
@@ -18,12 +25,12 @@ public class Consulatas {
         ArrayList<Double> probADH=new ArrayList<Double>();
         ArrayList<Double> probAPH=new ArrayList<Double>();
         int id=0;
-        double oddHF;
-        double oddDF;
-        double oddAF;
-        double oddHH;
-        double oddDH;
-        double oddAH;
+        double oddHF=0.0;
+        double oddDF=0.0;
+        double oddAF=0.0;
+        double oddHH=0.0;
+        double oddDH=0.0;
+        double oddAH=0.0;
         ResultSet res;
         Scanner sc =new Scanner(System.in);
         PreparedStatement stmnt;
@@ -57,8 +64,36 @@ public class Consulatas {
                 stmnt=connection.prepareStatement("SELECT \"scoreHomeHalf\", \"scoreHomeFull\", \"scoreAwayHalf\", \"scoreAwayFull\" FROM public.matches_2021 where hometeam="+home+";");
                 res=stmnt.executeQuery();
                 while(res.next()){
-                    
+                    probGF=((res.getInt("scoreHomeFull")-res.getInt("scoreAwayFull"))>0)?probGF+1:probGF+0;
+                    probDF=((res.getInt("scoreHomeFull")-res.getInt("scoreAwayFull"))==0)?probDF+1:probDF+0;
+                    probLF=((res.getInt("scoreHomeFull")-res.getInt("scoreAwayFull"))<0)?probLF+1:probLF+0;
+                    probGH=((res.getInt("scoreHomeHalf")-res.getInt("scoreAwayHalf"))>0)?probGH+1:probGH+0;
+                    probDH=((res.getInt("scoreHomeHalf")-res.getInt("scoreAwayHalf"))==0)?probDH+1:probDH+0;
+                    probLH=((res.getInt("scoreHomeHalf")-res.getInt("scoreAwayHalf"))<0)?probLH+1:probLH+0;
+                    total+=1;
                 }
+                probHGF.add(probGF/total);probHDF.add(probDF/total);probHPF.add(probLF/total);
+                probHGH.add(probGF/total);probHDH.add(probDH/total);probHPH.add(probLH/total);
+                res.close();
+                probGF=0;probDF=0;probLF=0;probGH=0; probDH=0;probLH=0;total=0;
+
+                stmnt=connection.prepareStatement("SELECT \"scoreHomeHalf\", \"scoreHomeFull\", \"scoreAwayHalf\", \"scoreAwayFull\" FROM public.matches_2021 where awayteam="+away+";");
+                res=stmnt.executeQuery();
+                while(res.next()){
+                    probGF=((res.getInt("scoreHomeFull")-res.getInt("scoreAwayFull"))<0)?probGF+1:probGF+0;
+                    probDF=((res.getInt("scoreHomeFull")-res.getInt("scoreAwayFull"))==0)?probDF+1:probDF+0;
+                    probLF=((res.getInt("scoreHomeFull")-res.getInt("scoreAwayFull"))>0)?probLF+1:probLF+0;
+                    probGH=((res.getInt("scoreHomeHalf")-res.getInt("scoreAwayHalf"))<0)?probGH+1:probGH+0;
+                    probDH=((res.getInt("scoreHomeHalf")-res.getInt("scoreAwayHalf"))==0)?probDH+1:probDH+0;
+                    probLH=((res.getInt("scoreHomeHalf")-res.getInt("scoreAwayHalf"))>0)?probLH+1:probLH+0;
+                    total+=1;
+                }
+                probAGF.add(probGF/total);probADF.add(probDF/total);probAPF.add(probLF/total);
+                probAGH.add(probGF/total);probADH.add(probDH/total);probAPH.add(probLH/total);
+                res.close();
+                probGF=0;probDF=0;probLF=0;probGH=0; probDH=0;probLH=0;total=0;
+
+
             }
             result.close();
             connection.close();
