@@ -772,7 +772,7 @@ public class JavaPostgreSQLBasic {
         ArrayList<Bet> aux=new ArrayList<Bet>();
         return aux; 
     }
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         ArrayList<Bet> betList=new ArrayList<Bet>();
         int salir=1;
 
@@ -783,7 +783,7 @@ public class JavaPostgreSQLBasic {
         int opcion=sc.nextInt();
         salir=opcion;
         if(opcion==1){
-            javaPostgreSQLBasic.insertarPartidos();
+            Consulatas.consultarLista();
         }else if (opcion==2){
 
             Bet aux=javaPostgreSQLBasic.consultaBet();
@@ -803,5 +803,5 @@ public class JavaPostgreSQLBasic {
             javaPostgreSQLBasic.consultarPorcentajes();
         }
         }
-    }
+    }*/
 }
