@@ -23,12 +23,18 @@ public class Consulatas {
         Partido aux1 = new Partido();
         ArrayList<Partido> aux = new ArrayList<Partido>();
         try {
+            try {
+                Class.forName("org.postgresql.Driver");
+            } catch (ClassNotFoundException ex) {
+                System.out.println("Error al registrar el driver de PostgreSQL: " + ex);
+            }
             Connection connection1 = null;
 
             connection1 = DriverManager.getConnection("jdbc:postgresql://loststyle.ddns.net:5433/bet_analisis",
                     "postgres", "hacker21");
             PreparedStatement stmnt1 = connection1
                     .prepareStatement("SELECT id, hometeam, awayteam FROM public.active_matches where active=0;");
+            
             ResultSet result = stmnt1.executeQuery();
 
             while (result.next()) {
@@ -36,9 +42,9 @@ public class Consulatas {
                 aux1.setHome(result.getString("hometeam"));
                 aux1.setAway(result.getString("awayteam"));
                 aux.add(aux1);
-                System.out.println(aux1.getHome() + " " + aux1.getAway());
             }
             result.close();
+            
             connection1.close();
             return aux;
 
@@ -46,7 +52,6 @@ public class Consulatas {
             return null;
         }
     }
-
     public static void consultarLista() {
         String home = "";
         String away = "";
@@ -90,7 +95,6 @@ public class Consulatas {
         double oddDH = 0.0;
         double oddAH = 0.0;
         Scanner sc = new Scanner(System.in);
-        Statement stmnt;
         partidos = getPartidos();
         for (Partido aux1 : partidos) {
             System.out.println(aux1.getHome() + " VS " + aux1.getAway());
@@ -106,6 +110,7 @@ public class Consulatas {
             oddDH = sc.nextDouble();
             System.out.println("Odd away Half: ");
             oddAH = sc.nextDouble();
+            
             // AÑADIR PROBABILIDADES DE BET365 A LAS LISTAS
             probHGF.add(1 / oddHF);
             probHDF.add(1 / oddDF);
@@ -123,14 +128,19 @@ public class Consulatas {
             /*
              * ESTADISTICAS EQUIPO EN CASA HISTORICO
              */try {
+                try {
+                    Class.forName("org.postgresql.Driver");
+                } catch (ClassNotFoundException ex) {
+                    System.out.println("Error al registrar el driver de PostgreSQL: " + ex);
+                }
                 Connection connection = null;
 
                 connection = DriverManager.getConnection("jdbc:postgresql://loststyle.ddns.net:5433/bet_analisis",
                         "postgres", "hacker21");
-                stmnt = connection.createStatement();
+                Statement stmnt = connection.createStatement();
                 ResultSet result = stmnt.executeQuery(
-                        "SELECT scoreHomeHalf, scoreHomeFull, scoreAwayHalf, scoreAwayFull FROM public.matches_2021 where hometeam="
-                                + aux1.getHome() + ";");
+                        "SELECT scoreHomeHalf, scoreHomeFull, scoreAwayHalf, scoreAwayFull FROM public.matches_2021 where hometeam='"
+                                + aux1.getHome() + "';");
                 while (result.next()) {
                     probGF = ((result.getInt("scoreHomeFull") - result.getInt("scoreAwayFull")) > 0) ? probGF + 1
                             : probGF + 0;
@@ -166,8 +176,8 @@ public class Consulatas {
                  */
 
                 result = stmnt.executeQuery(
-                        "SELECT \"scoreHomeHalf\", \"scoreHomeFull\", \"scoreAwayHalf\", \"scoreAwayFull\" FROM public.matches_2022 where hometeam="
-                                + aux1.getHome() + ";");
+                        "SELECT \"scoreHomeHalf\", \"scoreHomeFull\", \"scoreAwayHalf\", \"scoreAwayFull\" FROM public.matches_2022 where hometeam='"
+                                + aux1.getHome() + "';");
                 while (result.next()) {
                     probGF = ((result.getInt("scoreHomeFull") - result.getInt("scoreAwayFull")) > 0) ? probGF + 1
                             : probGF + 0;
@@ -201,8 +211,8 @@ public class Consulatas {
                  * ESTADISTICAS EQUIPO FUERA DE CASA HISTORICO
                  */
                 result = stmnt.executeQuery(
-                        "SELECT \"scoreHomeHalf\", \"scoreHomeFull\", \"scoreAwayHalf\", \"scoreAwayFull\" FROM public.matches_2021 where awayteam="
-                                + aux1.getAway() + ";");
+                        "SELECT \"scoreHomeHalf\", \"scoreHomeFull\", \"scoreAwayHalf\", \"scoreAwayFull\" FROM public.matches_2021 where awayteam='"
+                                + aux1.getAway() + "';");
                 while (result.next()) {
                     probGF = ((result.getInt("scoreHomeFull") - result.getInt("scoreAwayFull")) < 0) ? probGF + 1
                             : probGF + 0;
@@ -236,8 +246,8 @@ public class Consulatas {
                  * ESTADISTICAS EQUIPO FUERA DE CASA ESTA TEMPORADA
                  */
                 result = stmnt.executeQuery(
-                        "SELECT \"scoreHomeHalf\", \"scoreHomeFull\", \"scoreAwayHalf\", \"scoreAwayFull\" FROM public.matches_2022 where awayteam="
-                                + aux1.getAway() + ";");
+                        "SELECT \"scoreHomeHalf\", \"scoreHomeFull\", \"scoreAwayHalf\", \"scoreAwayFull\" FROM public.matches_2022 where awayteam='"
+                                + aux1.getAway() + "';");
                 while (result.next()) {
                     probGF = ((result.getInt("scoreHomeFull") - result.getInt("scoreAwayFull")) < 0) ? probGF + 1
                             : probGF + 0;
@@ -272,7 +282,7 @@ public class Consulatas {
                  */
                 result = stmnt.executeQuery(
                         "Select  \"scoreHomeHalf\", \"scoreHomeFull\", \"scoreAwayHalf\", \"scoreAwayFull\" FROM public.matches_2022 where home_team='"
-                                + aux1.getHome() + "'order by id DESC Limit 5");
+                                + aux1.getHome() + "' order by id DESC Limit 5");
                 while (result.next()) {
                     probGF = ((result.getInt("scoreHomeFull") - result.getInt("scoreAwayFull")) > 0) ? probGF + 1
                             : probGF + 0;
@@ -306,8 +316,8 @@ public class Consulatas {
                  * ESTADISTICAS EQUIPO FUERA DE CASA ULTIMOS 5 PARTIDOS
                  */
                 result = stmnt.executeQuery(
-                        "SELECT \"scoreHomeHalf\", \"scoreHomeFull\", \"scoreAwayHalf\", \"scoreAwayFull\" FROM public.matches_2022 where awayteam="
-                                + aux1.getAway() + "order by id DESC Limit 5;");
+                        "SELECT \"scoreHomeHalf\", \"scoreHomeFull\", \"scoreAwayHalf\", \"scoreAwayFull\" FROM public.matches_2022 where awayteam='"
+                                + aux1.getAway() + "' order by id DESC Limit 5;");
                 while (result.next()) {
                     probGF = ((result.getInt("scoreHomeFull") - result.getInt("scoreAwayFull")) < 0) ? probGF + 1
                             : probGF + 0;
@@ -451,7 +461,7 @@ public class Consulatas {
                 int resBuscadoDH = 0;
                 int resBuscadoLH = 0;
                 result = stmnt.executeQuery("Select *" + " from public.matches_2022 where hometeam='" + aux1.getHome()
-                        + "'or awayteam='" + aux1.getHome() + "'order by id DESC Limit 1");
+                        + "' or awayteam='" + aux1.getHome() + "' order by id DESC Limit 1");
                 while (result.next()) {
                     if (result.getString("hometeam").equals(aux1.getHome())) {
                         resBuscadoWF = ((result.getInt("scoreHomeFull") - result.getInt("scoreAwayFull")) > 0) ? 1 : 0;
@@ -467,7 +477,7 @@ public class Consulatas {
                 int i = 0;
                 int aux2 = 0;
                 result = stmnt.executeQuery("Select *" + " from public.matches_2022 where home_team='" + aux1.getHome()
-                        + "'or away_team='" + aux1.getHome() + "'order by id ASC ");
+                        + "' or away_team='" + aux1.getHome() + "' order by id ASC ");
                 while (result.next()) {
                     if (i == 0 && result.getString("hometeam").equals(aux1.getHome())) {
                         if ((result.getInt("scoreHomeFull") - result.getInt("scoreAwayFull")) > 0
@@ -555,7 +565,7 @@ public class Consulatas {
                  * RACHA PARTIDOS EQUIPO VISITANTE
                  */
                 result = stmnt.executeQuery("Select *" + " from public.matches_2022 where hometeam='" + aux1.getAway()
-                        + "'or awayteam='" + aux1.getAway() + "'order by id DESC Limit 1");
+                        + "' or awayteam='" + aux1.getAway() + "' order by id DESC Limit 1");
                 while (result.next()) {
                     if (result.getString("hometeam").equals(aux1.getAway())) {
                         resBuscadoWF = ((result.getInt("scoreHomeFull") - result.getInt("scoreAwayFull")) > 0) ? 1 : 0;
@@ -571,7 +581,7 @@ public class Consulatas {
                 i = 0;
                 aux2 = 0;
                 result = stmnt.executeQuery("Select *" + " from public.matches_2022 where home_team='" + aux1.getAway()
-                        + "'or away_team='" + aux1.getAway() + "'order by id ASC ");
+                        + "' or away_team='" + aux1.getAway() + "' order by id ASC ");
                 while (result.next()) {
                     if (i == 0 && result.getString("hometeam").equals(aux1.getAway())) {
                         if ((result.getInt("scoreHomeFull") - result.getInt("scoreAwayFull")) > 0
@@ -783,7 +793,7 @@ public class Consulatas {
                 }
                 System.out.println("Introduzca Cuota de " + betCombiS + ":");
                 betOddC = sc.nextDouble();
-
+                
                 String betSimpleSH = "";
                 String betCombiSH = "";
                 double betOddSH = 0.0;

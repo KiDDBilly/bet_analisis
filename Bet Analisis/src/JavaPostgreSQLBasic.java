@@ -33,7 +33,7 @@ public class JavaPostgreSQLBasic {
             Connection connection = null;
 
             connection = DriverManager.getConnection(
-                    "jdbc:postgresql://loststyle.ddns.net:5432/bet_analisis",
+                    "jdbc:postgresql://loststyle.ddns.net:5433/bet_analisis",
                     "postgres", "hacker21");
             PreparedStatement stmnt = connection.prepareStatement("Select guessed from bets where guessed!='????';");
             ResultSet result= stmnt.executeQuery();
@@ -65,7 +65,7 @@ public class JavaPostgreSQLBasic {
             Connection connection = null;
             //
             connection = DriverManager.getConnection(
-                    "jdbc:postgresql://192.168.1.63:5432/bet_analisis",
+                    "jdbc:postgresql://192.168.1.63:5433/bet_analisis",
                     "postgres", "hacker21");
 
             boolean valid = connection.isValid(50000);
@@ -113,7 +113,7 @@ public class JavaPostgreSQLBasic {
             Connection connection = null;
          
             connection = DriverManager.getConnection(
-                    "jdbc:postgresql://loststyle.ddns.net:5432/bet_analisis",
+                    "jdbc:postgresql://loststyle.ddns.net:5433/bet_analisis",
                     "postgres", "hacker21");
             String bet="";
             for (Bet aux1:bets) {
@@ -180,7 +180,7 @@ public class JavaPostgreSQLBasic {
             Connection connection = null;
 
             connection = DriverManager.getConnection(
-                    "jdbc:postgresql://loststyle.ddns.net:5432/bet_analisis",
+                    "jdbc:postgresql://loststyle.ddns.net:5433/bet_analisis",
                     "postgres", "hacker21");
 
             boolean valid = connection.isValid(50000);
@@ -265,7 +265,7 @@ public class JavaPostgreSQLBasic {
             Connection connection = null;
    
             connection = DriverManager.getConnection(
-                    "jdbc:postgresql://loststyle.ddns.net:5432/bet_analisis",
+                    "jdbc:postgresql://loststyle.ddns.net:5433/bet_analisis",
                     "postgres", "hacker21");
             Statement stmt = connection.createStatement();
             /*
@@ -772,7 +772,7 @@ public class JavaPostgreSQLBasic {
         ArrayList<Bet> aux=new ArrayList<Bet>();
         return aux; 
     }
-    /*public static void main(String[] args) {
+    public static void main(String[] args) {
         ArrayList<Bet> betList=new ArrayList<Bet>();
         int salir=1;
 
@@ -803,5 +803,5 @@ public class JavaPostgreSQLBasic {
             javaPostgreSQLBasic.consultarPorcentajes();
         }
         }
-    }*/
+    }
 }
